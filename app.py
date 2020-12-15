@@ -1,23 +1,45 @@
 from flask import Flask, render_template, jsonify, request, redirect
-from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine, inspect, MetaData, Table
+from sqlalchemy import Column, Integer, String, DateTime
+import subprocess
 import os
+import json
+import pandas as pd
+import get_data as gt
 
 app = Flask(__name__)
 
-# DATABASE_URL will contain the database connection string:
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', '')
-# Connects to the database using the app config
-db = SQLAlchemy(app)
+DATABASE_URL = subprocess.check_output("heroku config:get DATABASE_URL --app billboardchart2", shell=True).decode('utf-8')
+engine = create_engine(DATABASE_URL)
+metadata = MetaData(bind=engine)
+billboard_df = pd.read_sql_table("billboard_chart", con=engine)
 
 
 @app.route('/')
 def hello():
-    return "Hello World!"
-
-@app.route('/index')
-def test_index():
     return render_template("index.html")
 
+@app.route('/chartstay')
+def chart_stay():
+
+    res = gt.stay_on_chart
+    return jsonify(json.loads(res))
+    
+@app.route('/charttopstay')
+def chart_top_stay():
+
+    res = gt.no1_on_chart()
+    return jsonify(json.loads(res))
+    
+
+@app.route('/data/<rows>')
+def test_data(rows):
+    rows=int(rows)
+
+    res = gt.get_data(billboard_df, rows)
+    return jsonify(json.loads(res))
+
+
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
 
