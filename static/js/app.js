@@ -29,7 +29,7 @@ Plotly.newPlot(chart_div, data, layout)
 // function that plots pie charts
 // not in use right now. 
 // But you can always call it when you have data
-function plotPieChart(data, chart_div){
+function plotBarChart(data, chart_div){
   let trace1 = {
     type: "pie",
     name: "my plot",
