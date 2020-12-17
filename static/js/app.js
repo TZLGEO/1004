@@ -29,7 +29,7 @@ Plotly.newPlot(chart_div, data, layout)
 // function that plots pie charts
 // not in use right now. 
 // But you can always call it when you have data
-function plotBarChart(data, chart_div){
+function plotPieChart(data, chart_div){
   let trace1 = {
     type: "pie",
     name: "my plot",
@@ -52,7 +52,7 @@ function plotBarChart(data, chart_div){
 
 
 
-
+function plotcharts(){
 // this is related to the rout and calls the bar chart function
 d3.json("/charttopstay").then(function (chartData) {
   plotBarChart(chartData, "plot")
@@ -63,3 +63,5 @@ d3.json("/charttopstay").then(function (chartData) {
 d3.json("/chartstay").then(function (chartData) {
   plotBarChart(chartData, "plot2")
 })
+
+}
