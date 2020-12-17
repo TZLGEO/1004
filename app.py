@@ -22,14 +22,14 @@ def hello():
 @app.route('/chartstay')
 def chart_stay():
 
-    res = gt.stay_on_chart
-    return jsonify(json.loads(res))
+    res = gt.stay_on_chart(engine)
+    return jsonify(res)
     
 @app.route('/charttopstay')
 def chart_top_stay():
 
-    res = gt.no1_on_chart()
-    return jsonify(json.loads(res))
+    res = gt.no1_on_chart(engine)
+    return jsonify(res)
     
 
 @app.route('/data/<rows>')
